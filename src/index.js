@@ -59,7 +59,7 @@ function onSubmitBtnClick(e) {
                 employee
             )
         } else {
-            console.log('valid', invalidFields)
+            return console.log('valid', invalidFields);
         }
     }
     const res = JSON.stringify(Object.fromEntries(employees.entries()));
