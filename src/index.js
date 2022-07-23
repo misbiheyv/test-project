@@ -10,6 +10,8 @@ import "@/style.css";
 
 const employees = new Map()
 
+const employeeValidator = new EmployeeValidator()
+
 const addBtn = document.getElementById('addRowBtn');
 
 addBtn.addEventListener('click', onAddRowBtnClick);
@@ -38,6 +40,29 @@ function onAddRowBtnClick() {
     }
     const el = getNewRow(id)
     container.insertAdjacentHTML("beforeEnd", el)
+}
+
+function onSubmitBtnClick(e) {
+    const container = document.querySelector('tbody');
+    for (const child of container.children) {
+        const empId = getNumberFromID(e.target.id);
+        const employee = new Employee (
+            child.children[0].firstElementChild.value,
+            child.children[1].firstElementChild.value,
+            child.children[2].firstElementChild.value,
+            child.children[3].firstElementChild.value
+        )
+        const invalidFields = employeeValidator.validCheck(employee).getInvalids()
+        if (invalidFields === undefined) {
+            employees.set(
+                empId,
+                employee
+            )
+        } else {
+            console.log('valid', invalidFields)
+        }
+    }
+    const res = JSON.stringify(Object.fromEntries(employees.entries()));
 }
 
 function onRemoveRowBtnClick(e) {
@@ -96,8 +121,11 @@ function filter(filter) {
         } else {
             el.classList.add('hidden');
         }
-
     }
+}
+
+function validation() {
+
 }
 
 //#endregion
