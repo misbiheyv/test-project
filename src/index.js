@@ -124,8 +124,4 @@ function filter(filter) {
     }
 }
 
-function validation() {
-
-}
-
 //#endregion
