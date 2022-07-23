@@ -1,6 +1,12 @@
-import { Employee } from "@scripts/Employee";
+//#region imports
+
+import Employee from "@scripts/Employee";
+
+import EmployeeValidator from "./scripts/EmployeeValidator";
 
 import "@/style.css";
+
+//#endregion
 
 const employees = new Map()
 
@@ -12,30 +18,26 @@ const submitBtn = document.getElementById('submitBtn');
 
 submitBtn.addEventListener('click', onSubmitBtnClick);
 
-function onAddRowBtnClick() {
-    const container = document.querySelector('tbody');
-    const el = getNewRow(container.childElementCount + 1)
-    container.appendChild(el)
+const headerInput = document.getElementById('header-input')
+
+headerInput.addEventListener('input', onInput)
+
+onAddRowBtnClick()
+
+//#region methods
+
+function onInput(e) {
+    filter(e.target.value, document.querySelector('tbody').children)
 }
 
-function onSubmitBtnClick(e) {
+function onAddRowBtnClick() {
     const container = document.querySelector('tbody');
-    for (const child of container.children) {
-
-        const empId = getNumberFromID(e.target.id);
-        console.log('childern', child.children)
-        employees.set(
-            empId,
-            new Employee (
-                child.children[0].firstElementChild.value,
-                child.children[1].firstElementChild.value,
-                child.children[2].firstElementChild.value,
-                child.children[3].firstElementChild.value
-            )
-        )
+    let id = 0;
+    if (container.children.length > 0) {
+        id = container.childElementCount + 1
     }
-    const res = JSON.stringify(Object.fromEntries(employees.entries()));
-    console.log(res)
+    const el = getNewRow(id)
+    container.insertAdjacentHTML("beforeEnd", el)
 }
 
 function onRemoveRowBtnClick(e) {
@@ -48,36 +50,54 @@ function getNumberFromID(id) {
     return num ? num[0] : undefined
 }
 
-
-
 function getNewRow(id) {
-    const tr = document.createElement('tr')
-    tr.id = `row-${id}`
-    
-    const inner = `
-        <td class="table-body__item">
-            <input class="input table__input" placeholder="Укажите ФИО" type="text">
-        </td>
-        <td class="table-body__item">
-            <select class="table__select">
-                <option>не выбрано</option>
-                <option>аналитик</option>
-                <option>менеджер</option>
-                <option>программист</option>
-                <option>юрист</option>
-            </select>
-        </td>
-        <td class="table-body__item">
-            <input class="input table__input" placeholder="Укажите свой возраст" type="number">
-        </td>
-        <td class="table-body__item">
-            <textarea class="input table__input" placeholder="Укажите свои компетенции"></textarea>
-        </td>
-        <td class="table-body__item">
-            <button class="table-remove__btn" id="rm-btn-${id}" onclick="onRemoveRowBtnClick(event)">-</button>
-        </td>
+    const html =  `
+        <tr id="row-${id}">
+            <td class="table-body__item">
+                <input class="input table__input" placeholder="Укажите ФИО" type="text">
+            </td>
+            <td class="table-body__item">
+                <select class="table__select">
+                    <option>не выбрано</option>
+                    <option>аналитик</option>
+                    <option>менеджер</option>
+                    <option>программист</option>
+                    <option>юрист</option>
+                </select>
+            </td>
+            <td class="table-body__item">
+                <input class="input table__input" placeholder="Укажите свой возраст" type="number">
+            </td>
+            <td class="table-body__item">
+                <textarea class="input table__input" placeholder="Укажите свои компетенции"></textarea>
+            </td>
+            <td class="table-body__item">
+                <button class="table-remove__btn" id="rm-btn-${id}" onclick="onRemoveRowBtnClick(event)">-</button>
+            </td>
+        </tr>
     `
-
-    tr.innerHTML = inner
-    return tr
+    return html;
 }
+
+function filter(filter) {
+    const invisibles = Array
+        .from(document.querySelector('tbody').children)
+        .filter(row => 
+                Array.from(row.children)
+                .every(el => {
+                        return !el.children[0].value.toLowerCase().includes(filter.toLowerCase());
+                    }
+                )
+        );
+
+    for (const el of document.querySelector('tbody').children) {
+        if (!invisibles.includes(el)) {
+            el.classList.remove('hidden');
+        } else {
+            el.classList.add('hidden');
+        }
+
+    }
+}
+
+//#endregion

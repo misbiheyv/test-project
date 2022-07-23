@@ -11,3 +11,7 @@
 
 /* TABLE */
 @import url("/styles/table.css");
+
+.hidden {
+    display: none !important;
+}
