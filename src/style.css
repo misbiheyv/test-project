@@ -1,0 +1,13 @@
+@import "~normalize.css";
+
+/* NULL */
+@import url("/styles/null.css");
+
+/* MAIN */
+@import url("/styles/main.css");
+
+/* ASIDE */
+@import url("/styles/aside.css");
+
+/* TABLE */
+@import url("/styles/table.css");

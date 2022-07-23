@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/rocket-fav.ico" type="image/x-icon">
+    <title>Test</title>
+</head>
+<body>
+    <div class="container">
+        <aside class="aside__menu menu">
+            <h2 class="menu__header">Меню</h2>
+            <hr />
+            <ul class="menu__list menu-list">
+                <li class="menu-list__el">Пункт 1</li>
+                <li class="menu-list__el">Пункт 2</li>
+                <li class="menu-list__el">Пункт 3</li>
+                <li class="menu-list__el">Пункт 4</li>
+            </ul>
+        </aside>
+        <header class="header">
+            <input class="header__input input" type="text">
+        </header>
+        <div class="main">
+            <div class="main__wrapper">
+                <table class="main__table main-table">
+                    <thead class="main-table__head table-head">
+                        <th class="table-head__item" >ФИО</th>
+                        <th class="table-head__item" >Должность</th>
+                        <th class="table-head__item" >Возраст</th>
+                        <th class="table-head__item" >Компетенции</th>
+                        <th class="table-head__item" ></th>
+                    </thead>
+                    <tbody class="main-table__body table-body">
+                        <tr class="table-body__row" id="row-1">
+                            <td class="table-body__item">
+                                <input class="input table__input" type="text" placeholder="Укажите ФИО">
+                            </td>
+                            <td class="table-body__item">
+                                <select class="table__select">
+                                    <option>не выбрано</option>
+                                    <option>аналитик</option>
+                                    <option>менеджер</option>
+                                    <option>программист</option>
+                                    <option>юрист</option>
+                                </select>                      
+                            </td>
+                            <td class="table-body__item">
+                                <input class="input table__input" type="number" placeholder="Укажите возраст">
+                            </td>
+                            <td class="table-body__item">
+                                <textarea class="input table__input" placeholder="Укажите свои компетенции"></textarea>
+                            </td>
+                            <td class="table-body__item">
+                                <button class="table-remove__btn" id="rm-btn-1" onclick="onRemoveRowBtnClick(event)" class="remove-row__btn">-</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <section class="actions">
+                <button class="actions__btn" type="submit" id="submitBtn">Отправить</button>
+                <button class="actions__btn" id="addRowBtn">Добавить</button>
+            </section>
+        </div>
+        <footer class="footer">
+            <a href="#">О компании</a>
+        </footer>
+    </div>
+</body>
+</html>
