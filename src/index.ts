@@ -43,8 +43,12 @@ function onAddRowBtnClick() {
 }
 
 function onSubmitBtnClick(e: Event) {
-    const container : HTMLTableSectionElement = document.querySelector('tbody');
-    const employees = new Map();
+    const 
+        container : HTMLTableSectionElement = document.querySelector('tbody'),
+        employees = new Map();
+    let 
+        valid = true;
+
     for (const child of Array.from(container.children)) {
         const 
             empId = getNumberFromID((<HTMLElement>e.target).id),
@@ -69,25 +73,29 @@ function onSubmitBtnClick(e: Event) {
             continue ;
         }
 
-        // inp1.classList.add('incorrect')
-        // inp2.classList.add('incorrect')
-        // inp3.classList.add('incorrect')
-        // inp4.classList.add('incorrect')
+        valid = false
 
-        // inp1.addEventListener('input', removeIncorrectClass)
-        // inp2.addEventListener('input', removeIncorrectClass)
-        // inp3.addEventListener('input', removeIncorrectClass)
-        // inp4.addEventListener('input', removeIncorrectClass)
+        inp1.addEventListener('input', removeIncorrectClass)
+        inp2.addEventListener('input', removeIncorrectClass)
+        inp3.addEventListener('input', removeIncorrectClass)
+        inp4.addEventListener('input', removeIncorrectClass)
 
-        // function removeIncorrectClass(e) {
-        //     e.target.classList.remove('incorrect');
-        //     e.target.removeEventListener('input', removeIncorrectClass);
-        // }
+        if (invalidFields.includes('name')) inp1.classList.add('incorrect')
+        if (invalidFields.includes('position')) inp2.classList.add('incorrect')
+        if (invalidFields.includes('age')) inp3.classList.add('incorrect')
+        if (invalidFields.includes('expertise')) inp4.classList.add('incorrect')
 
-        // return console.log('valid', invalidFields);
+        function removeIncorrectClass(e: Event) {
+            (<HTMLElement>e.target).classList.remove('incorrect');
+            e.target.removeEventListener('input', removeIncorrectClass);
+        }
     }
-    const res = JSON.stringify(Object.fromEntries(employees.entries()));
-    storage.setValue('employees', res);
+    if (valid) {
+        const res = JSON.stringify(Object.fromEntries(employees.entries()));
+        storage.setValue('employees', res);
+    } else {
+        console.log('invalid')
+    }
 }
 
 function onRemoveRowBtnClick(e: Event) {
@@ -152,7 +160,6 @@ function filter(filter : string) {
 function onPageUnload() {
     const container = document.querySelector('tbody');
     const employees = []
-    console.log(container.children)
 
     for (const child of Array.from(container.children)) {
         employees.push(
@@ -164,7 +171,7 @@ function onPageUnload() {
             )
         )
     }
-    console.log(employees)
+
     storage.setValue('employees', JSON.stringify(employees));
 }
 

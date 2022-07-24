@@ -29,7 +29,6 @@ export default class EmployeeValidator {
                     res[f] = this.#validAge(emp[f])
                     break;
                 case 'position':
-                    console.log(emp, emp[f])
                     res[f] = this.#validPosition(emp[f])
                     break;
                 case 'expertise':
