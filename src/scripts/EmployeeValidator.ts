@@ -2,21 +2,23 @@ import Employee from "./Employee";
 import validator from "./api/validator";
 
 export default class EmployeeValidator {
-    constructor(o) {
+    name: boolean;
+    age: boolean;
+    position: boolean;
+    expertise: boolean;
+    temp: any = {};
+
+    constructor(o? : Iterable<any>) {
         if (o === undefined) return;
         if (o[Symbol.iterator]) {
             for (const [key, value] of o) {
-                this[key] = value
+                this.temp[key] = value;
             }
         }
     }
 
-    validCheck(emp) {
-        if (!emp instanceof Employee) {
-            throw new TypeError('Passed argument is not instance of Employee')
-        }
-
-        const res = {}
+    validCheck(emp: Employee) {
+        const res: any = {}
 
         for (const f of Object.getOwnPropertyNames(new Employee())) {
             switch (f) {
@@ -27,13 +29,14 @@ export default class EmployeeValidator {
                     res[f] = this.#validAge(emp[f])
                     break;
                 case 'position':
+                    console.log(emp, emp[f])
                     res[f] = this.#validPosition(emp[f])
                     break;
                 case 'expertise':
                     res[f] = this.#validExpertise(emp[f])
                     break;
                 default:
-                    res[f] = validator.isNotEmpty(emp[f])
+                    // res[f] = validator.isNotEmpty(emp[f])
                     break;
             }
         }
@@ -51,27 +54,26 @@ export default class EmployeeValidator {
 
     getInvalids() {
         const res = []
-        for (const [key, value] of this) {
-            console.log(key, value)
-            if (value === false) res.push(key)
+        for (const key in this.temp) {
+            if (this.temp[key] === false) res.push(key)
         }
         return res.length > 0 ? res : undefined;
     }
 
 
-    #validName(name) {
+    #validName(name: string) {
         return validator.isNotEmpty(name);
     }
     
-    #validAge(age) {
+    #validAge(age: number | string) {
         return validator.isNotEmpty(age) && validator.isNumber(age);
     }
     
-    #validPosition(position) {
+    #validPosition(position: string) {
         return validator.isNotEmpty(position) && validator.exclude(position, 'не выбрано')
     }
     
-    #validExpertise(text) {
+    #validExpertise(text: string) {
         return validator.isNotEmpty(text);
     }
 
@@ -79,10 +81,11 @@ export default class EmployeeValidator {
         const keys = Object.getOwnPropertyNames(this)
 
         const iter = (function *(self) {
-            for (const key of keys) {
+
+            for (const key of self) {
                 yield [key, self[key]];
             }
-        })(this)
+        })(this.temp)
 
         return iter;
     }

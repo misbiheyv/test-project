@@ -1,10 +1,15 @@
 export default class Employee {
     name = '';
-    age = 0;
     position = '';
+    age : number | string = 0;
     expertise = '';
 
-    constructor(name, age, position, expertise) {
+    constructor(
+        name? : string, 
+        position? : string, 
+        age? : number | string, 
+        expertise? : string
+    ) {
         this.name = name
         this.age = age
         this.position = position
@@ -14,7 +19,7 @@ export default class Employee {
     [Symbol.iterator]() {
         const keys = Object.getOwnPropertyNames(this)
 
-        const iter = (function *(self) {
+        const iter = (function *(self: any) {
             for (const key of keys) {
                 yield [key, self[key]];
             }

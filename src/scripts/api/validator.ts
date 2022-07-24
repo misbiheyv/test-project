@@ -1,23 +1,23 @@
 export default {
-    isNotEmpty(str) {
+    isNotEmpty(str: string | number) {
         return this.trim(str).length > 0;
     },
-    test(str, reg) {
+    test(str: string, reg: RegExp) {
         if (reg instanceof RegExp) return reg.test(this.trim(str));
         throw new TypeError('Pass string for test as 1 param and regular expression as second');
     },
-    isNumber(str) {
+    isNumber(str: string | number) {
         return !Number.isNaN(Number(this.trim(str)));
     },
-    trim(str) {
+    trim(str: string) {
         if (str?.length > 0)
             return str.trim()
         return '';
     },
-    include(str, ...includes) {
+    include(str: string, ...includes: string[]) {
         return includes.includes(str)
     },
-    exclude(str, ...excludes) {
-        return !excludes.include(str)
+    exclude(str: string, ...excludes: string[]) {
+        return !excludes.includes(str)
     }
 }

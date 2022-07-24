@@ -15,3 +15,9 @@
 .hidden {
     display: none !important;
 }
+
+.incorrect {
+    border: 1px solid rgba(255, 0, 0, .9);
+    border-radius: 5px;
+    background-color: rgba(255, 0, 0, .1);
+}

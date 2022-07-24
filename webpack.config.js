@@ -63,7 +63,7 @@ module.exports = {
 	entry: {
 		main: [
             "@babel/polyfill", 
-            "./index.js"
+            "./index.ts"
         ],
 	},
 	output: {
@@ -71,6 +71,7 @@ module.exports = {
 		path: path.resolve(__dirname, "dist"),
 	},
 	resolve: {
+        extensions: ['.ts', '.js', '.json'],
 		alias: {
             "@scripts": path.resolve(__dirname, "src/scripts"),
             "@styles": path.resolve(__dirname, "src/styles"),
@@ -84,6 +85,11 @@ module.exports = {
 	},
 	module: {
 		rules: [
+            {
+                test: /\.ts$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
+            },
 			{
 				test: /\.css$/i,
 				use: [
