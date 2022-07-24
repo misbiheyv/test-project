@@ -1,5 +1,5 @@
-import Employee from "./Employee";
-import validator from "./api/validator";
+import Employee from "../employee/Employee";
+import Validator from "./Validator";
 
 export default class EmployeeValidator {
     name: boolean;
@@ -19,26 +19,11 @@ export default class EmployeeValidator {
 
     validCheck(emp: Employee) {
         const res: any = {}
-
-        for (const f of Object.getOwnPropertyNames(new Employee())) {
-            switch (f) {
-                case 'name':
-                    res[f] = this.#validName(emp[f])
-                    break;
-                case 'age':
-                    res[f] = this.#validAge(emp[f])
-                    break;
-                case 'position':
-                    res[f] = this.#validPosition(emp[f])
-                    break;
-                case 'expertise':
-                    res[f] = this.#validExpertise(emp[f])
-                    break;
-                default:
-                    // res[f] = validator.isNotEmpty(emp[f])
-                    break;
-            }
-        }
+        console.log(emp)
+        res.name = this.validName(emp.name)
+        res.age = this.validAge(emp.age)
+        res.position = this.validPosition(emp.position)
+        res.expertise = this.validExpertise(emp.expertise)
 
         res[Symbol.iterator] = () => {
             return (function *() {
@@ -59,21 +44,20 @@ export default class EmployeeValidator {
         return res.length > 0 ? res : undefined;
     }
 
-
-    #validName(name: string) {
-        return validator.isNotEmpty(name);
+    private validName(name: string) {
+        return Validator.isNotEmpty(name);
     }
     
-    #validAge(age: number | string) {
-        return validator.isNotEmpty(age) && validator.isNumber(age);
+    private validAge(age: number | string) {
+        return Validator.isNotEmpty(age) && Validator.isNumber(String(age));
     }
     
-    #validPosition(position: string) {
-        return validator.isNotEmpty(position) && validator.exclude(position, 'не выбрано')
+    private validPosition(position: string) {
+        return Validator.isNotEmpty(position) && Validator.exclude(position, 'не выбрано')
     }
     
-    #validExpertise(text: string) {
-        return validator.isNotEmpty(text);
+    private validExpertise(text: string) {
+        return Validator.isNotEmpty(text);
     }
 
     [Symbol.iterator]() {
