@@ -1,17 +1,17 @@
 //#region imports
 
-import Employee from "@scripts/Employee";
+import Employee from "@scripts/employee/Employee";
 
-import EmployeeValidator from "./scripts/EmployeeValidator";
+import EmployeeValidator from "./scripts/validator/EmployeeValidator";
 
-import Storage from "./scripts/Storage";
+import { default as storageFactory, localStorageEngine } from "./scripts/kv-storage";
 
 import "@/style.css";
 
 //#endregion
 
 const 
-    storage = new Storage(),
+    storage = storageFactory({engine: new localStorageEngine()}),
     employeeValidator = new EmployeeValidator(),
     addBtn = document.getElementById('addRowBtn'),
     submitBtn = document.getElementById('submitBtn'),
@@ -33,13 +33,9 @@ function onInput(e: Event) {
 }
 
 function onAddRowBtnClick() {
-    const container = document.querySelector('tbody');
-    let id = 0;
-    if (container.children.length > 0) {
-        id = container.childElementCount + 1
-    }
-    const el = getNewRow(id)
-    container.insertAdjacentHTML("beforeend", el)
+    const table = document.querySelector('tbody');
+    let id = table.childElementCount;
+    table.insertAdjacentHTML("beforeend", getNewRow(id))
 }
 
 function onSubmitBtnClick(e: Event) {
@@ -57,13 +53,15 @@ function onSubmitBtnClick(e: Event) {
             inp3: HTMLInputElement = <HTMLInputElement>child.children[2].firstElementChild,
             inp4: HTMLTextAreaElement = <HTMLTextAreaElement>child.children[3].firstElementChild;
 
-        const employee = new Employee (
-            inp1.value,
-            inp2.value,
-            inp3.value,
-            inp4.value
-        )
-        const invalidFields = employeeValidator.validCheck(employee).getInvalids()
+        const employee = new Employee ({
+            name: inp1.value,
+            position: inp2.value,
+            age: inp3.value,
+            expertise: inp4.value
+        })
+        const validCheck = employeeValidator.validCheck(employee);
+        console.log(validCheck)
+        const invalidFields = validCheck.getInvalids()
 
         if (invalidFields === undefined) {
             employees.set(
@@ -92,7 +90,7 @@ function onSubmitBtnClick(e: Event) {
     }
     if (valid) {
         const res = JSON.stringify(Object.fromEntries(employees.entries()));
-        storage.setValue('employees', res);
+        storage.set('employees', res);
     } else {
         console.log('invalid')
     }
@@ -151,9 +149,9 @@ function filter(filter : string) {
     for (const el of Array.from(document.querySelector('tbody').children)) {
         if (!invisibles.includes(el)) {
             el.classList.remove('hidden');
-        } else {
-            el.classList.add('hidden');
+            continue ;
         }
+        el.classList.add('hidden');
     }
 }
 
@@ -163,16 +161,16 @@ function onPageUnload() {
 
     for (const child of Array.from(container.children)) {
         employees.push(
-            new Employee (
-                (<HTMLInputElement | HTMLTextAreaElement>child.children[0].firstElementChild).value,
-                (<HTMLInputElement | HTMLTextAreaElement>child.children[1].firstElementChild).value,
-                (<HTMLInputElement | HTMLTextAreaElement>child.children[2].firstElementChild).value,
-                (<HTMLInputElement | HTMLTextAreaElement>child.children[3].firstElementChild).value
-            )
+            new Employee ({
+                name: (<HTMLInputElement | HTMLTextAreaElement>child.children[0].firstElementChild).value,
+                position: (<HTMLInputElement | HTMLTextAreaElement>child.children[1].firstElementChild).value,
+                age: (<HTMLInputElement | HTMLTextAreaElement>child.children[2].firstElementChild).value,
+                expertise: (<HTMLInputElement | HTMLTextAreaElement>child.children[3].firstElementChild).value
+            })
         )
     }
 
-    storage.setValue('employees', JSON.stringify(employees));
+    storage.set('employees', JSON.stringify(employees));
 }
 
 //#endregion
