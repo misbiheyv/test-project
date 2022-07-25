@@ -2,9 +2,9 @@
 
 import Employee from "@scripts/employee/Employee";
 
-import EmployeeValidator from "./scripts/validator/EmployeeValidator";
+import EmployeeValidator from "@scripts/validator/EmployeeValidator";
 
-import { default as storageFactory, localStorageEngine } from "./scripts/kv-storage";
+import { default as storageFactory, localStorageEngine } from "@scripts/kv-storage";
 
 import "@/style.css";
 
@@ -24,7 +24,35 @@ submitBtn.addEventListener('click', onSubmitBtnClick);
 
 headerInput.addEventListener('input', onInput)
 
-onAddRowBtnClick()
+let employees: any[];
+
+storage.get('employees')
+    .then((res : any)=> {
+        console.log(res)
+        employees = JSON.parse(res)
+        console.log(employees, typeof employees)
+
+        if (employees != undefined && employees.length > 0) {
+        
+            for (const employee of employees) {
+                const table = document.querySelector('tbody');
+                let id = table.childElementCount;
+                const row = getNewRow(
+                    id,
+                    employee.name,
+                    employee.position,
+                    employee.age,
+                    employee.expertise
+                )
+                table.insertAdjacentHTML("beforeend", row)
+                table.lastElementChild.querySelector('.table-remove__btn').addEventListener('click', onRemoveRowBtnClick)
+            }
+        } else {
+            onAddRowBtnClick()
+        }
+    })
+
+window.onbeforeunload = onPageUnload
 
 //#region methods
 
@@ -36,6 +64,7 @@ function onAddRowBtnClick() {
     const table = document.querySelector('tbody');
     let id = table.childElementCount;
     table.insertAdjacentHTML("beforeend", getNewRow(id))
+    table.lastElementChild.querySelector('.table-remove__btn').addEventListener('click', onRemoveRowBtnClick)
 }
 
 function onSubmitBtnClick(e: Event) {
@@ -106,29 +135,35 @@ function getNumberFromID(id: string) {
     return num ? num[0] : undefined
 }
 
-function getNewRow(id: string | number) {
+function getNewRow(
+    id: string | number,
+    name?: string,
+    position?: string,
+    age?: number,
+    expertise?: string
+) {
     const html =  `
         <tr id="row-${id}">
             <td class="table-body__item">
-                <input class="input table__input" placeholder="Укажите ФИО" type="text">
+                <input class="input table__input" placeholder="Укажите ФИО" type="text" value="${name ?? ''}">
             </td>
             <td class="table-body__item">
                 <select class="table__select">
-                    <option>не выбрано</option>
-                    <option>аналитик</option>
-                    <option>менеджер</option>
-                    <option>программист</option>
-                    <option>юрист</option>
+                    <option ${!position?'selected':''}>не выбрано</option>
+                    <option ${position=='аналитик'?'selected':''}>аналитик</option>
+                    <option ${position=='менеджер'?'selected':''}>менеджер</option>
+                    <option ${position=='программист'?'selected':''}>программист</option>
+                    <option ${position=='юрист'?'selected':''}>юрист</option>
                 </select>
             </td>
             <td class="table-body__item">
-                <input class="input table__input" placeholder="Укажите свой возраст" type="number">
+                <input class="input table__input" placeholder="Укажите свой возраст" type="number" value="${age ?? ''}">
             </td>
             <td class="table-body__item">
-                <textarea class="input table__input" placeholder="Укажите свои компетенции"></textarea>
+                <textarea class="input table__input" placeholder="Укажите свои компетенции">${expertise ?? ''}</textarea>
             </td>
             <td class="table-body__item">
-                <button class="table-remove__btn" id="rm-btn-${id}" onclick="onRemoveRowBtnClick(event)">-</button>
+                <button class="table-remove__btn" id="rm-btn-${id}">-</button>
             </td>
         </tr>
     `
@@ -169,7 +204,6 @@ function onPageUnload() {
             })
         )
     }
-
     storage.set('employees', JSON.stringify(employees));
 }
 
