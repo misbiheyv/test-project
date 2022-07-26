@@ -2,7 +2,7 @@ export interface IEmployee {
     name: string;
     position: string;
     age: EmployeeAge;
-    expertise: string
+    expertise: string;
 }
 
 export type EmployeeOptions = {

@@ -12,17 +12,15 @@ export default abstract class Validator {
         return !Number.isNaN(Number(this.trim(str)));
     }
 
-    static trim(str: string) {
-        if (str?.length > 0)
-            return str.trim()
-        return '';
-    }
-
     static include(str: string, ...includes: string[]) {
         return includes.includes(str)
     }
 
     static exclude(str: string, ...excludes: string[]) {
         return !excludes.includes(str)
+    }
+
+    private static trim(str: string) {
+        return (str?.length > 0) ? str.trim() : '';
     }
 }
