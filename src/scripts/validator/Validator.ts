@@ -1,5 +1,3 @@
-import { SerializableValue } from './interface';
-
 export default abstract class Validator {
     static isNotEmpty(str: string | number) {
         return this.trim(String(str)).length > 0;
