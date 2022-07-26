@@ -28,6 +28,10 @@ export default class EmployeeValidator implements IEValidator {
         return this.validates;
     }
 
+    public get isValid(): boolean {
+        return !Object.values(this.validates).includes(false);
+    }
+
     constructor(opts: IEmployee) {
         for (const key of Object.keys(opts)) {
             const t = <IEValidatorKey>key;

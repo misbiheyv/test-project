@@ -82,26 +82,25 @@ function onSubmitBtnClick(e: Event) {
                 name: inp1.value, position: inp2.value,
                 age: inp3.value, expertise: inp4.value
             }),
-            invalidFields = employeeValidator(employee).getResults;
+            validator = employeeValidator(employee),
+            invalidFields = validator.getResults;
+            
+        valid = validator.isValid
 
-        console.log('invalidFields', invalidFields)
-
-        if (invalidFields === undefined) {
+        if (valid) {
             employees.set(empId, employee)
             continue ;
         }
-
-        valid = false
 
         inp1.addEventListener('input', removeIncorrectClass)
         inp2.addEventListener('input', removeIncorrectClass)
         inp3.addEventListener('input', removeIncorrectClass)
         inp4.addEventListener('input', removeIncorrectClass)
 
-        if (invalidFields.name) inp1.classList.add('incorrect')
-        if (invalidFields.position) inp2.classList.add('incorrect')
-        if (invalidFields.age) inp3.classList.add('incorrect')
-        if (invalidFields.expertise) inp4.classList.add('incorrect')
+        if (!invalidFields.name) inp1.classList.add('incorrect')
+        if (!invalidFields.position) inp2.classList.add('incorrect')
+        if (!invalidFields.age) inp3.classList.add('incorrect')
+        if (!invalidFields.expertise) inp4.classList.add('incorrect')
 
         function removeIncorrectClass(e: Event) {
             (<HTMLElement>e.target).classList.remove('incorrect');
@@ -111,6 +110,7 @@ function onSubmitBtnClick(e: Event) {
     if (valid) {
         const res = JSON.stringify(Object.fromEntries(employees.entries()));
         storage.set('employees', res);
+        console.log('valid')
     } else {
         console.log('invalid')
     }
