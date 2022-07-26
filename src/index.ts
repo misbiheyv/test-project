@@ -2,7 +2,7 @@
 
 import Employee from "@scripts/employee/Employee";
 
-import EmployeeValidator from "@scripts/validator/EmployeeValidator";
+import employeeValidator from "@scripts/validator";
 
 import { default as storageFactory, localStorageEngine } from "@scripts/kv-storage";
 
@@ -12,7 +12,6 @@ import "@/style.css";
 
 const 
     storage = storageFactory({engine: new localStorageEngine()}),
-    employeeValidator = new EmployeeValidator(),
     addBtn = document.getElementById('addRowBtn'),
     submitBtn = document.getElementById('submitBtn'),
     headerInput = document.getElementById('header-input');
@@ -28,9 +27,7 @@ let employees: any[];
 
 storage.get('employees')
     .then((res : any)=> {
-        console.log(res)
         employees = JSON.parse(res)
-        console.log(employees, typeof employees)
 
         if (employees != undefined && employees.length > 0) {
         
@@ -80,23 +77,17 @@ function onSubmitBtnClick(e: Event) {
             inp1: HTMLInputElement = <HTMLInputElement>child.children[0].firstElementChild,
             inp2: HTMLInputElement = <HTMLInputElement>child.children[1].firstElementChild,
             inp3: HTMLInputElement = <HTMLInputElement>child.children[2].firstElementChild,
-            inp4: HTMLTextAreaElement = <HTMLTextAreaElement>child.children[3].firstElementChild;
+            inp4: HTMLTextAreaElement = <HTMLTextAreaElement>child.children[3].firstElementChild,
+            employee = new Employee ({
+                name: inp1.value, position: inp2.value,
+                age: inp3.value, expertise: inp4.value
+            }),
+            invalidFields = employeeValidator(employee).getResults;
 
-        const employee = new Employee ({
-            name: inp1.value,
-            position: inp2.value,
-            age: inp3.value,
-            expertise: inp4.value
-        })
-        const validCheck = employeeValidator.validCheck(employee);
-        console.log(validCheck)
-        const invalidFields = validCheck.getInvalids()
+        console.log('invalidFields', invalidFields)
 
         if (invalidFields === undefined) {
-            employees.set(
-                empId,
-                employee
-            )
+            employees.set(empId, employee)
             continue ;
         }
 
@@ -107,10 +98,10 @@ function onSubmitBtnClick(e: Event) {
         inp3.addEventListener('input', removeIncorrectClass)
         inp4.addEventListener('input', removeIncorrectClass)
 
-        if (invalidFields.includes('name')) inp1.classList.add('incorrect')
-        if (invalidFields.includes('position')) inp2.classList.add('incorrect')
-        if (invalidFields.includes('age')) inp3.classList.add('incorrect')
-        if (invalidFields.includes('expertise')) inp4.classList.add('incorrect')
+        if (invalidFields.name) inp1.classList.add('incorrect')
+        if (invalidFields.position) inp2.classList.add('incorrect')
+        if (invalidFields.age) inp3.classList.add('incorrect')
+        if (invalidFields.expertise) inp4.classList.add('incorrect')
 
         function removeIncorrectClass(e: Event) {
             (<HTMLElement>e.target).classList.remove('incorrect');

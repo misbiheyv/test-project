@@ -1,11 +1,12 @@
 import type {
 
     EmployeeOptions,
+    IEmployee,
     EmployeeAge
 
 } from './interface';
 
-export default class Employee {
+export default class Employee implements IEmployee {
     name = '';
     position : string = 'не выбрано';
     age : EmployeeAge;
