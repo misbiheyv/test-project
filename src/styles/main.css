@@ -2,6 +2,7 @@
     position: relative;
 }
 .container { 
+    background: rgb(222, 247, 250);
     height: 100vh;
     width: 100%;
     display: grid;
@@ -22,7 +23,7 @@
 }
 .header__input {
     padding: 8px 15px;
-    border: 1px rgba(108, 122, 224, .8) solid;
+    border: 1px rgba(12, 50, 85, .7) solid;
     border-radius: 5px;
     min-width: 10rem;
 }
@@ -32,8 +33,16 @@
 .main {
     grid-area: main;
     height: calc(100vh - 120px);
-    padding: 0px 20px;
     overflow: scroll;
+}
+
+.main::-webkit-scrollbar {
+    display: none;
+}
+
+.main {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 .footer {
     grid-area: footer;

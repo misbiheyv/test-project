@@ -42,7 +42,7 @@ const getPlugins = () => {
         new CopyPlugin({
             patterns: [
                 { 
-                    from: path.resolve(__dirname, "**/rocket-fav.ico"),
+                    from: path.resolve(__dirname, "src", "assets", "*"),
                     to: path.resolve(__dirname, "dist"),
                     context: path.resolve(__dirname, "src"),
                 }
