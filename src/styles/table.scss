@@ -1,0 +1,99 @@
+// table.scss
+
+@import './colors.scss';
+
+.main__wrapper {
+    width: 100%;
+    padding: 0px 20px;
+
+    .main__table {
+        border-collapse: collapse;
+        display: grid;
+        grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) minmax(40px, .2fr);
+        margin-bottom: 20px;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.main-table {
+    &__head, &__body, & tr { display: contents; }
+
+    .table-head {
+
+        &__item {
+            padding: 15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            background: $dark-blue;
+            text-align: left;
+            font-weight: normal;
+            font-size: 1.1rem;
+            color: white;
+            text-align: left;
+        }
+
+        &__item:last-child {
+            border: 0;
+        }
+    }
+
+    .table-body {
+        &__row {
+            &>.table-body__item:last-child {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+
+        &__item {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            color: #808080;
+        
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &>*{
+                width: 100%;
+            }
+
+            textarea {
+                padding: 15px 15px;
+                height: 10vh;
+            }
+
+            .incorrect {
+                border: 1px solid $bright-red;
+                border-radius: 5px;
+                background-color: $transparent-red;
+            }
+
+            .table__input, .table__select {
+                height: 100%;
+                padding: 0px 15px;
+            }
+
+            .table-remove__btn {
+                background: $base-red;
+                border-radius: 5px;
+                aspect-ratio: 3/2;
+                margin: 10px;
+                color: white;
+                transition: all .3s;
+
+                &:hover {
+                    background: $bright-red;
+                    box-shadow: 0px 2px 24px $bright-red;
+                }
+            }
+
+        }
+    }
+}

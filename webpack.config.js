@@ -91,10 +91,11 @@ module.exports = {
                 exclude: /node_modules/
             },
 			{
-				test: /\.css$/i,
+				test: /\.s[ac]ss$/i,
 				use: [
                     MiniCssExtractPlugin.loader, 
-                    "css-loader"
+                    "css-loader",
+                    "sass-loader"
                 ],
 			},
             {

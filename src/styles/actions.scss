@@ -1,0 +1,29 @@
+// actions.scss
+
+@import './colors.scss';
+
+.actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    bottom: 0; left: 0;
+    padding: 0px 20px 20px 20px;
+    background: $base-background;
+
+    &__btn {
+        background: $dark-blue;
+        border-radius: 5px;
+        padding: 10px 20px;
+        height: 100%;
+        color: white;
+    
+        transition: all .3s;
+
+        &:hover {
+            background: $bright-blue;
+            box-shadow: 0px 2px 24px $bright-blue;
+        }
+    }
+}
