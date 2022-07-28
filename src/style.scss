@@ -4,9 +4,11 @@
 
 @import './styles/main.scss';
 
-@import './styles/table.scss';
+@import './styles/components/table/table.scss';
 
-@import './styles/actions.scss';
+@import './styles/components/table/actions.scss';
+
+@import './styles/components/modal/modal.scss';
 
 @import "~normalize.css";
 

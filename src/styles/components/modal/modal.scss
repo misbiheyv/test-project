@@ -1,0 +1,45 @@
+@import '../../utils/mixins.scss';
+
+.modal__container {
+    position: absolute;
+    inset: 0rem;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    .modal {
+        position: fixed;
+        inset: 5rem;
+        margin: auto;
+        background: white;
+        color: black;
+        overflow-x: scroll;
+        padding: 5rem;
+        @include laptop { inset: 5vh 10vw; padding: 3rem; }
+        @include tablet { inset: 0; padding: 2rem; }
+
+        &__close {
+            position: absolute;
+            top: 35px; right: 35px;
+            @include tablet { top: 12px; right: 12px; }
+        }
+        &__title {
+            margin-bottom: 32px;
+            @include tablet { font-size: 24px; margin-bottom: 24px;}
+        }
+        &__content {
+            .content__section {
+                &:not(:last-child) { 
+                    margin-bottom: 52px; 
+                    @include tablet { margin-bottom: 32px; }
+                }
+                &-title {
+                    display: inline-block;
+                    margin-bottom: 16px;
+                }
+            }
+        }
+    }
+}
+.close-btn {
+    background: none;
+}
